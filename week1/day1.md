@@ -1,4 +1,4 @@
-# Notes
+# Notes - [youtube](https://youtu.be/ZsZ293yD5Vw)
 
 Motivation of blockchain:
 

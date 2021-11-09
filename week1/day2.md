@@ -1,4 +1,4 @@
-# Notes
+# Notes - [youtube](https://www.youtube.com/watch?v=meBNL_mMXYU&feature=youtu.be)
 
 To mine a bitcoin block the number of preceding 0s required is 19.
 Mining a block contains the hash of the previous block's: Block number, nonce, data (transactions etc.)
