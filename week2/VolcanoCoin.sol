@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 contract owned {
-    address owner;
+    address immutable owner;
     modifier onlyOwner() {
         if (msg.sender == owner) {
             _; //replaced by the code of calling function
