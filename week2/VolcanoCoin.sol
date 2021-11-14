@@ -16,19 +16,38 @@ contract owned {
 }
 
 contract VolcanoCoin is owned {
-    int256 totalSupply;
-    event increasedTotalSupply(int256);
+    uint256 totalSupply;
+    mapping (address => uint256) public balance;
+    struct funder {
+        address dest;
+        uint256 amount;
+    }
+    mapping (address => funder[]) payment; 
+
+    event newTotalSupply(uint256);
+    event coinTransfer(address, address, uint256);
 
     constructor() {
         totalSupply = 10000;
+        balance[msg.sender] = totalSupply;
     }
 
-    function getTotalSupply() public view returns (int256) {
+    function getTotalSupply() public view returns (uint256) {
         return totalSupply;
     }
 
     // only allowed to increment
-    function increaseTotalSupply(int256 _amount) public onlyOwner {
-        totalSupply = totalSupply + _amount;
+    function increaseTotalSupply(uint256 _amount) public onlyOwner {
+        totalSupply += _amount;
+        emit newTotalSupply(_amount);
+        // what if _amount + totalSupply exceeds capacity of uint256?
+    }
+
+    function send(uint256 _amount, address _destination) public {
+        require(balance[msg.sender] >= _amount);
+        balance[msg.sender] -= _amount;
+        balance[_destination] += _amount;
+        payment[msg.sender].push(funder({dest: _destination, amount: _amount}));
+        emit coinTransfer(msg.sender, _destination, _amount);
     }
 }

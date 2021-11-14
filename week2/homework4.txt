@@ -1,0 +1,4 @@
+1) a) mapping
+2) a) make the balance map public OR private/internal with a public getter function.
+4) a) the global variable msg contains the caller's address msg.sender
+   b) the sender could provide an alternative address, i.e. pretend to be another user
