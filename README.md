@@ -13,3 +13,5 @@
 - [ ] 8. NFT UI - Leave it for now
 - [ ] 9. Chai test cases for given smart contract
 - [ ] 10. Further VolcanoCoin functionality
+
+= [ ] Play with ethers/web3 libraries
