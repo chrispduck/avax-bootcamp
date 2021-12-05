@@ -14,14 +14,13 @@ use(solidity);
 
 describe("Volcano Coin", () => {
   let volcanoContract;
-  let owner, addr1, addr2, addr3;
+  let owner, addr1, addr2, admin;
 
   beforeEach(async () => {
+    [owner, addr1, addr2, admin] = await ethers.getSigners();
     const Volcano = await ethers.getContractFactory("VolcanoCoin");
-    volcanoContract = await Volcano.deploy();
+    volcanoContract = await Volcano.deploy(admin.address);
     await volcanoContract.deployed();
-    // console.log(volcanoContract);
-    [owner, addr1, addr2, addr3] = await ethers.getSigners();
   });
 
   it("has a name", async () => {
@@ -73,7 +72,10 @@ describe("Volcano Coin", () => {
 
   it("decreases allowance for address1", async () => {
     increase_by = 100;
-    let tx = await volcanoContract.increaseAllowance(addr1.address, increase_by);
+    let tx = await volcanoContract.increaseAllowance(
+      addr1.address,
+      increase_by
+    );
     await tx.wait();
     initial_allowance = await volcanoContract.allowance(
       owner.address,
@@ -84,7 +86,10 @@ describe("Volcano Coin", () => {
     tx = await volcanoContract.decreaseAllowance(addr1.address, decrease_by);
     await tx.wait();
 
-    new_allowance = await volcanoContract.allowance(owner.address, addr1.address);
+    new_allowance = await volcanoContract.allowance(
+      owner.address,
+      addr1.address
+    );
     expect(new_allowance).to.equal(initial_allowance - decrease_by);
   });
 
@@ -162,4 +167,48 @@ describe("Volcano Coin", () => {
       balance_addr2 + amount
     );
   });
+
+  it("a payment record is created after a payment is made", async () => {
+    let amount = 100;
+    transferTx = await volcanoContract.transfer(addr1.address, amount);
+    receipt = await transferTx.wait();
+    console.log("transferTx:", transferTx);
+    console.log("receipt: ", receipt);
+    paymentsOwner = await volcanoContract.getPayments(owner.address);
+    paymentsAddr1 = await volcanoContract.getPayments(addr1.address);
+    console.log(paymentsOwner);
+
+    console.log("paymentOwner", paymentsOwner);
+    let block = await ethers.provider.getBlock('latest')
+    console.log("block", block);
+    console.log("transferTx.timestamp", transferTx.timestamp);
+    let p = paymentsOwner[0];
+    expect(p.id).to.equal(0); // first payment
+    expect(p.paymentType).to.equal(0); //unknown enum 0
+    expect(p.timestamp).to.equal(block.timestamp);
+    expect(p.recipient).to.equal(addr1.address);
+    expect(p.amount).to.equal(amount);
+    expect(p.comment).to.equal("");
+
+    // TODO how to assert in one expression??
+    // expect(paymentsOwner).to.equal([{
+    //   "id": ethers.BigNumber.from(0),
+    //   "paymentType": "unknown",
+    //   "timestamp": ethers.BigNumber.from(block.timestamp),
+    //   "recipient": ethers.BigNumber.from(addr1.address),
+    //   "amount": ethers.BigNumber.from(amount),
+    //   "comment": ""
+    // }]);
+
+    let admin = await volcanoContract.admin();
+    console.log("admin:", admin);
+
+    // note: example use of auto getter - requires args if mappin or array, and for nesting.
+    allPayments = await volcanoContract.payments(owner.address, 0);
+    console.log("all payments:", allPayments);
+  });
+
+  it("a payment type and comment can be updated after the payment", async () => {});
+  it("a non admin can't update the payment type", async () => {});
+  it("an admin can update the payment type. and the comment is changed", async () => {})
 });
