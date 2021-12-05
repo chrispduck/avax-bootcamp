@@ -55,11 +55,13 @@ async function deployContract() {
   const contract = await volcanoContract.deploy(); // pass parameters to you constructor
 
   await contract.deployed();
-
+  console.log(await contract.connect(myWallet01).name());
+  console.log(await contract.connect(myWallet02).symbol());
   console.log("contract addr:", contract.address);
   let name = await contract.name();
 
   console.log("name:", name);
+  return contract.address
 }
 
 let myWallet02 = new ethers.Wallet(
@@ -67,9 +69,13 @@ let myWallet02 = new ethers.Wallet(
   provider
 );
 
-async function connectToContract() {
-  let contractAddr = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
-
+async function connectToContract(contractAddr) {
+  // const volcanoContract = await ethers.getContractFactory(
+  //   "VolcanoCoin",
+  //   myWallet01
+  // );
+  // let contractAddr = "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82";
+  
   const volcanoContract = await ethers.getContractAt(
     "VolcanoCoin",
     contractAddr,
@@ -79,6 +85,10 @@ async function connectToContract() {
   let name = await volcanoContract.name();
   console.log("name:", name);
 
+  let nameGasCost = await volcanoContract.estimateGas.name();
+  // volcanoContract.estimateGas(volcanoContract.name())
+  console.log("estimate for calling tx contact.name()", nameGasCost);
+  // send from one account to another and back
   let ownerBalance = await volcanoContract.balanceOf(myWallet01.address);
   let otherUserBalance = await volcanoContract.balanceOf(myWallet02.address);
   console.log("owner balance:", ownerBalance.toString());
@@ -98,7 +108,7 @@ async function connectToContract() {
 
   let refundTx = await volcanoContract
     .connect(myWallet02)
-    .transfer(myWallet01.address, 20);
+    .transfer(myWallet01.address, 10);
 
   await refundTx.wait();
 
@@ -108,10 +118,17 @@ async function connectToContract() {
   console.log("other user balance after refund:", otherUserBalance.toString());
 }
 
+async function main(){
+  // await basicProvider()
+  // await sendingTx();
+  contractAddr = await deployContract();
+  await connectToContract(contractAddr);
+}
 // basicProvider()
 // sendingTx()
 // deployContract()
-connectToContract()
+// connectToContract()
+main()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
