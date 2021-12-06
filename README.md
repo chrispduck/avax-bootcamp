@@ -11,7 +11,8 @@
     - [x] Read
     - [ ] Write
 - [ ] 8. NFT UI - Leave it for now
-- [ ] 9. Chai test cases for given smart contract
-- [ ] 10. Further VolcanoCoin functionality
+- [x] 9. Chai test cases for given smart contract
+- [x] 10. Further VolcanoCoin functionality
 
-= [ ] Play with ethers/web3 libraries
+- [x] toy with ethers lib
+- [ ] toy with web3 lib
