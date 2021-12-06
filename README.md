@@ -14,5 +14,6 @@
 - [x] 9. Chai test cases for given smart contract
 - [x] 10. Further VolcanoCoin functionality
 
+## Other todos
 - [x] toy with ethers lib
 - [ ] toy with web3 lib
