@@ -27,7 +27,7 @@ describe("Volcano Coin", () => {
     expect(await volcanoContract.name()).to.equal("Volcano Coin");
     expect(await volcanoContract.name()).to.not.equal("Other Token");
   });
-
+  
   it("reverts when transferring tokens to the zero address", async () => {
     // expectRevert from OpenZepplin test helpers
     await expectRevert(
@@ -35,24 +35,24 @@ describe("Volcano Coin", () => {
       "ERC20: transfer to the zero address"
     );
   });
-
+  
   //homework
   it("has a symbol", async () => {
     let symbol = await volcanoContract.symbol();
     assert.notEqual(symbol, "hello", "symbol is hello, should be VLC");
     assert.equal(symbol, "VLC", "symbol is not VLC");
   });
-
+  
   it("has 18 decimals", async () => {
     assert.equal(await volcanoContract.decimals(), 18);
     assert.notEqual(await volcanoContract.decimals(), 19);
   });
-
+  
   it("assigns initial balance", async () => {
     assert.equal(await volcanoContract.balanceOf(owner.address), 100000);
     assert.notEqual(await volcanoContract.balanceOf(owner.address), 20);
   });
-
+  
   it("increases allowance for address1", async () => {
     amount = 100;
     initial_allowance = await volcanoContract.allowance(
@@ -69,7 +69,7 @@ describe("Volcano Coin", () => {
     // assert.equal(new_balance.toNumber(), 100);
     expect(new_allowance).to.equal(initial_allowance + amount);
   });
-
+  
   it("decreases allowance for address1", async () => {
     increase_by = 100;
     let tx = await volcanoContract.increaseAllowance(
@@ -81,23 +81,23 @@ describe("Volcano Coin", () => {
       owner.address,
       addr1.address
     );
-
+  
     decrease_by = 20;
     tx = await volcanoContract.decreaseAllowance(addr1.address, decrease_by);
     await tx.wait();
-
+  
     new_allowance = await volcanoContract.allowance(
       owner.address,
       addr1.address
     );
     expect(new_allowance).to.equal(initial_allowance - decrease_by);
   });
-
+  
   it("emits an event when increasing allowance", async () => {
     let tx = await volcanoContract.increaseAllowance(addr1.address, 10);
     await expect(tx).to.emit(volcanoContract, "Approval");
   });
-
+  
   it("revets decreaseAllowance when trying decrease below 0", async () => {
     current_allowance = await volcanoContract.allowance(
       owner.address,
@@ -108,18 +108,18 @@ describe("Volcano Coin", () => {
       "ERC20: decreased allowance below zero"
     );
   });
-
+  
   it("updates balances on successful transfer from owner to addr1", async () => {
     initial_balance = await volcanoContract.balanceOf(owner.address);
     tx = await volcanoContract.transfer(addr1.address, 100);
     await tx.wait();
-
+  
     expect(await volcanoContract.balanceOf(owner.address)).to.equal(
       initial_balance - 100
     );
     assert.equal(await volcanoContract.balanceOf(addr1.address), 100);
   });
-
+  
   it("reverts transfer when sender does not have enough balance", async () => {
     await expectRevert(
       volcanoContract.transfer(
@@ -129,7 +129,7 @@ describe("Volcano Coin", () => {
       "ERC20: transfer amount exceeds balance"
     );
   });
-
+  
   it("reverts transferFrom addr1 to addr2 called by the owner without setting allowance", async () => {
     tx = await volcanoContract.transfer(addr1.address, 2000);
     await tx.wait();
@@ -138,9 +138,9 @@ describe("Volcano Coin", () => {
       "ERC20: transfer amount exceeds allowance"
     );
   });
-
+  
   it("updates balances after transferFrom addr1 to addr2 called by the owner", async () => {
-    amount = 1000;
+    let amount = 1000;
     // transfer to addr1
     let tx = await volcanoContract.transfer(addr1.address, amount);
     tx.wait();
@@ -167,17 +167,17 @@ describe("Volcano Coin", () => {
       balance_addr2 + amount
     );
   });
-
+  
   it("a payment record is created after a payment is made", async () => {
     let amount = 100;
-    transferTx = await volcanoContract.transfer(addr1.address, amount);
-    receipt = await transferTx.wait();
+    let transferTx = await volcanoContract.transfer(addr1.address, amount);
+    let receipt = await transferTx.wait();
     console.log("transferTx:", transferTx);
     console.log("receipt: ", receipt);
-    paymentsOwner = await volcanoContract.getPayments(owner.address);
-    paymentsAddr1 = await volcanoContract.getPayments(addr1.address);
+    let paymentsOwner = await volcanoContract.getPayments(owner.address);
+    let paymentsAddr1 = await volcanoContract.getPayments(addr1.address);
     console.log(paymentsOwner);
-
+  
     console.log("paymentOwner", paymentsOwner);
     let block = await ethers.provider.getBlock('latest')
     console.log("block", block);
@@ -189,7 +189,7 @@ describe("Volcano Coin", () => {
     expect(p.recipient).to.equal(addr1.address);
     expect(p.amount).to.equal(amount);
     expect(p.comment).to.equal("");
-
+  
     // TODO how to assert in one expression??
     // expect(paymentsOwner).to.equal([{
     //   "id": ethers.BigNumber.from(0),
@@ -199,16 +199,76 @@ describe("Volcano Coin", () => {
     //   "amount": ethers.BigNumber.from(amount),
     //   "comment": ""
     // }]);
-
+  
     let admin = await volcanoContract.admin();
     console.log("admin:", admin);
-
+  
     // note: example use of auto getter - requires args if mappin or array, and for nesting.
-    allPayments = await volcanoContract.payments(owner.address, 0);
+    let allPayments = await volcanoContract.payments(owner.address, 0);
     console.log("all payments:", allPayments);
   });
 
-  it("a payment type and comment can be updated after the payment", async () => {});
-  it("a non admin can't update the payment type", async () => {});
-  it("an admin can update the payment type. and the comment is changed", async () => {})
+  it("the payment type and comment can be updated after the payment", async () => {
+    let amount = 100;
+    let transferTx = await volcanoContract.transfer(addr1.address, amount);
+    await transferTx.wait();
+    let id = 0;
+    let basicPaymentType = 1;
+    let comment = "";
+    let updateTx = await volcanoContract.updatePaymentDetails(
+      id,
+      basicPaymentType,
+      comment
+    );
+    await updateTx.wait();
+    let payment = await volcanoContract.getPayment(owner.address, id);
+    console.log("payment:", payment);
+    expect(payment.paymentType).to.equal(basicPaymentType);
+  });
+
+  it("a non-admin can't update the payment type", async () => {
+    let amount = 100;
+    let transferTx = await volcanoContract.transfer(addr1.address, amount);
+    await transferTx.wait();
+    let id = 0;
+    let newPaymentType = 1;
+    await expectRevert(
+      volcanoContract
+        .connect(addr2)
+        .updatePaymentTypeAdmin(owner.address, id, newPaymentType),
+      "updatePaymentTypeAdmin called by non-admin"
+    );
+  });
+
+  it("an admin can update the payment type, and the comment is changed", async () => {
+    let amount = 100;
+    let transferTx = await volcanoContract.transfer(addr1.address, amount);
+    await transferTx.wait();
+    let id = 0;
+    let basicPaymentType = 1;
+    
+    let updateTx = await volcanoContract
+      .connect(admin)
+      .updatePaymentTypeAdmin(owner.address, id, basicPaymentType);
+    await updateTx.wait();
+    let payment = await volcanoContract.getPayment(owner.address, id);
+    let comment = "updated by admin:";
+    console.log("payment:", payment);
+    expect(payment.paymentType).to.equal(basicPaymentType);
+    expect(payment.comment).to.equal(comment);
+  });
+
+  it("revert if payment id does not exist", async () => {
+    let invalidId = 100;
+    await expectRevert(
+      volcanoContract.updatePaymentDetails(invalidId, 0, ""),
+      "payment does not exist"
+    );
+    await expectRevert(
+      volcanoContract
+        .connect(admin)
+        .updatePaymentTypeAdmin(addr1.address, invalidId, 0),
+      "payment does not exist"
+    );
+  });
 });

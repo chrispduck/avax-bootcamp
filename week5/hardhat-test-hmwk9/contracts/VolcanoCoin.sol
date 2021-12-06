@@ -102,8 +102,9 @@ contract VolcanoCoin is ERC20("Volcano Coin", "VLC"), Ownable {
         require(payments[_sender].length >= _id, "payment does not exist");
         payments[_sender][_id].paymentType = _paymentType;
         string memory comment = payments[_sender][_id].comment;
-        comment = string(abi.encodePacked("updated by admin", comment));
+        comment = string(abi.encodePacked("updated by admin:", comment));
         payments[_sender][_id].comment = comment;
         return true;
     }
 }
+
