@@ -1,0 +1,11 @@
+## Upgrading contracts
+
+* OpenZeppelin implements
+  * ERC1967Upgrade - Standard Proxy Storage Slots - Standardise where proxies store the address of the logic contract they delegate to, as well as other proxy-specific information, such as Admins 
+  * UUPS upgradeable
+  * Initializer
+
+* Install openzeppelin contracts-upgradeable fork https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
+* Install hardhat upgrades package `https://www.npmjs.com/package/@openzeppelin/hardhat-upgrades`
+* Change ERC20 to ERC20Upgradeable, OwnerUpgradeable, UUPSUpgradeable
+* Implement virtual func from UUPSUpgradeable `_authorizeUpgrade()` 
