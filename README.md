@@ -13,6 +13,8 @@
 - [ ] 8. NFT UI - Leave it for now
 - [x] 9. Chai test cases for given smart contract
 - [x] 10. Further VolcanoCoin functionality
+- [ ] 11. Hack the levels - solidity security
+- [x] 12. Upgradeable contract
 
 ## Other todos
 - [x] toy with ethers lib
