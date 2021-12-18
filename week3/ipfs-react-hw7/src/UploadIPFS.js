@@ -18,9 +18,17 @@ function UploadIPFS() {
     let cid = await upload(data);
     if (await cid.path) {
       console.log("setting display message");
-      setDisplayMessage(`Uploaded to IPFS!
-      Your CID: ${await cid.path}\n 
-      View at https://ipfs.io/ipfs/${await cid.path}`);
+      let url = `https://ipfs.io/ipfs/${await cid.path}`;
+      setDisplayMessage(
+        <div>
+          <div>Uploaded to IPFS!</div>
+          <div>Your CID: {await cid.path}</div>
+          <div>
+            {" "}
+            View at <a href={url}>view on url</a>
+          </div>
+        </div>
+      );
     }
   }
 
