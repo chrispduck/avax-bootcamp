@@ -5,31 +5,33 @@ const IPFS = require("ipfs");
 // const all = require("it-all");
 
 function ViewIPFS() {
-  const [cid, setCid] = useState("QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A");
+  const [cid, setCid] = useState(
+    "QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A"
+  );
   const [data, setData] = useState("");
   function handleChange(e) {
     setCid(e.target.value);
   }
 
-  function renderContent() {
-    getFile(cid);
+  async function renderContent() {
+    await getFile(cid);
     console.log(data);
   }
   async function getFile(cid) {
     // Initialise IPFS node
-    const node = await IPFS.create({repo: 'ok'+ Math.random()});
+    const node = await IPFS.create({ repo: "ok" + Math.random() });
     // Store CID in a variable
     //  const cid = 'QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A';
     // Retrieve data from CID
     // await node.wait()
     const stream = node.cat(cid);
-    let file = '';
+    let file = "";
     let utf8decoder = new TextDecoder();
     for await (const chunk of stream) {
       // chunks of data are returned as a Buffer, convert it back to a string
       file += utf8decoder.decode(chunk);
-    } 
-    console.log(typeof( file));
+    }
+    console.log(typeof file);
     console.log(file);
     // console.log(utf8decoder.decode(file));
     // await node.stop();
