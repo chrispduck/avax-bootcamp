@@ -7,9 +7,7 @@
 - [x] 4. VolcanoCoin added functionality (payment record, events)
 - [x] 5. ERC20 with OpenZepplin base contracts
 - [x] 6. NFT contract - Create ERC721 
-- [ ] 7. Decentralised Storage UI
-    - [x] Read
-    - [ ] Write
+- [x] 7. Decentralised Storage UI
 - [ ] 8. NFT UI - Leave it for now
 - [x] 9. Chai test cases for given smart contract
 - [x] 10. Further VolcanoCoin functionality
