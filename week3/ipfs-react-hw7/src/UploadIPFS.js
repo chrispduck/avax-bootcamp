@@ -1,7 +1,9 @@
 // Dependency
 import "./App.css";
 import React, { useState } from "react";
-const IPFS = require("ipfs");
+import { create } from "ipfs-http-client";
+
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 function UploadIPFS() {
   // data to upload to IPFS
@@ -30,14 +32,10 @@ function UploadIPFS() {
   }
 
   async function upload(data) {
-    // Initialise IPFS node
-    const node = await IPFS.create();
     // Submit data to the network
-    const cid = await node.add(data);
+    const cid = await client.add(data);
     // Log & return CID
     console.log(cid);
-    await node.stop();
-    console.log("called node.stop()");
 
     return cid;
   }

@@ -1,8 +1,9 @@
 import "./App.css";
 import React, { useState } from "react";
 // import Math from 'math'
-const IPFS = require("ipfs");
-// const all = require("it-all");
+import { create } from "ipfs-http-client";
+
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 function ViewIPFS() {
   const [cid, setCid] = useState(
@@ -19,12 +20,10 @@ function ViewIPFS() {
   }
   async function getFile(cid) {
     // Initialise IPFS node
-    const node = await IPFS.create({ repo: "ok" + Math.random() });
     // Store CID in a variable
     //  const cid = 'QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A';
     // Retrieve data from CID
-    // await node.wait()
-    const stream = node.cat(cid);
+    const stream = client.cat(cid);
     let file = "";
     let utf8decoder = new TextDecoder();
     for await (const chunk of stream) {
@@ -41,7 +40,7 @@ function ViewIPFS() {
     // // Print data to console
     // console.log(fileData.toString());
     setData(file);
-    await node.stop();
+    // await node.stop();
   }
 
   return (
