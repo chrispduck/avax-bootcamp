@@ -23,10 +23,7 @@ function UploadIPFS() {
         <div>
           <div>Uploaded to IPFS!</div>
           <div>Your CID: {await cid.path}</div>
-          <div>
-            {" "}
-            View at <a href={url}>view on url</a>
-          </div>
+          <div> View at <a href={url}>view on url</a></div>
         </div>
       );
     }
@@ -56,7 +53,7 @@ function UploadIPFS() {
             Submit
           </button>
         </span>
-        <p>{displayMessage}</p>
+        {displayMessage}
       </header>
     </div>
   );
