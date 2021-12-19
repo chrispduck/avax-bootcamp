@@ -14,7 +14,3 @@
 - [ ] 11. Hack the levels - solidity security
 - [x] 12. Upgradeable contract
 - [ ] 13. DeFi interactions
-
-## Other todos
-- [x] toy with ethers lib
-- [ ] toy with web3 lib
