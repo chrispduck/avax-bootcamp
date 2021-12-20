@@ -24,7 +24,7 @@ describe("DeFi", () => {
     
     // Tack control of the whale
     // Check that we have control of the whale account
-    const whale = await ethers.getSigner(
+    whale = await ethers.getSigner(
       "0x503828976D22510aad0201ac7EC88293211D23Da"
     );
 
@@ -34,20 +34,25 @@ describe("DeFi", () => {
   });
 
   it("should check transfer succeeded", async () => {
-    let initialBalance = await DAI_TokenContract.balanceOf(owner.address);
+    let initialBalance = await DAI_TokenContract.connect(owner).balanceOf(owner.address);
     await DAI_TokenContract.connect(whale).transfer(
       owner.address,
       BigInt(INITIAL_AMOUNT)
     );
-    expect(await DAI_TokenContract.balanceOf(owner.address)).to.equal(initialBalance + INITIAL_AMOUNT);
+    expect(await DAI_TokenContract.balanceOf(owner.address)).to.equal(parseInt(initialBalance) + INITIAL_AMOUNT);
   });
 
   it("should sendDAI to contract", async () => {
-    expect(await DAI_TokenContract.transfer(DeFi_Instance.address, 99999999900000)).to.equal(true);
-    
+    tx = await DAI_TokenContract.connect(owner).transfer(DeFi_Instance.address, 99999999900000);
+    console.log(`tx ${tx}`);
+    result = await tx.wait();
+    console.log(`result ${result}`);
   });
 
   it("should make a swap", async () => {
-    expect
+    let tx = await DeFi_Instance.swapDAItoUSDC(10000000);
+    console.log(`tx ${tx}`);
+    result = await tx.wait();
+    console.log(`result ${result}`);
   });
 });
