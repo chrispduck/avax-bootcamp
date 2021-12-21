@@ -1,4 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
+// require("solidity-coverage");
+require("hardhat-gas-reporter");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -34,6 +36,12 @@ module.exports = {
   networks: {
     fork: {
       url: "http://127.0.0.1:8545",
+      // blockGasLimit: 100_000_000_000
     },
   },
+  gasReporter: {
+    currency: 'USD',
+    gasPrice: 6.4
+  }
+  // plugins: ["solidity-coverage"]
 };
