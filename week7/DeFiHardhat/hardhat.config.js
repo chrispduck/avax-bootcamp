@@ -1,5 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
-// require("solidity-coverage");
+require("solidity-coverage");
 require("hardhat-gas-reporter");
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -32,16 +32,27 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.4",
+  solidity: {
+    version: "0.8.4",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  },
+  defaultNetwork: "fork",
   networks: {
     fork: {
       url: "http://127.0.0.1:8545",
-      // blockGasLimit: 100_000_000_000
+      // initialBaseFeePerGas: 0,
+      // initialBaseFeePerGas:
+      blockGasLimit: "100_000_000_000"
     },
   },
   gasReporter: {
     currency: 'USD',
-    gasPrice: 6.4
+    gasPrice: 6.4,
+    coinmarketcap: process.env.COINMARKETCAP_API
   }
-  // plugins: ["solidity-coverage"]
 };
