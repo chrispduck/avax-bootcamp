@@ -13,4 +13,4 @@
 - [x] 10. Further VolcanoCoin functionality
 - [ ] 11. Hack the levels - solidity security
 - [x] 12. Upgradeable contract
-- [ ] 13. DeFi interactions
+- [x] 13. DeFi interactions
