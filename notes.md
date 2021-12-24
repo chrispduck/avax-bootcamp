@@ -7,5 +7,6 @@
 * getSigners
 
 ## Hardhat config
-
+* optimiser
+* network
 
