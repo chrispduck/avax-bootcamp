@@ -9,4 +9,4 @@
 ## Hardhat config
 * optimiser
 * network
-
+* hardhat-waffle
