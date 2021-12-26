@@ -4,6 +4,7 @@
 // rather than using OpenZepplin Metadata ERC721 add-on contract ERC721URIStorage
 
 pragma solidity ^0.8.4;
+import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -24,15 +25,17 @@ contract nft is ERC721, Ownable {
     constructor() ERC721("ChrisNFT", "CNFT") {}
 
     // Start from tokenId=1
-    function mint(address _to, string memory _tokenURI) public onlyOwner {
+    function mint(address _to, string memory _tokenURI) public onlyOwner returns (uint256){
         tokenId += 1;
         metadata memory tokenMetadata = metadata({
             tokenId: tokenId,
             timestamp: block.timestamp
         });
+        console.log("mint: token URI", _tokenURI);
         tokenURIs[tokenId] = _tokenURI;
         _safeMint(_to, tokenId);
         portfolio[_to].push(tokenMetadata);
+        return tokenId;
     }
 
     function burn(uint256 _tokenId) public {
@@ -61,6 +64,7 @@ contract nft is ERC721, Ownable {
         override
         returns (string memory)
     {
+        console.log("tokenURI tokenURI:", tokenURIs[_tokenId]);
         return tokenURIs[_tokenId];
     }
 }
