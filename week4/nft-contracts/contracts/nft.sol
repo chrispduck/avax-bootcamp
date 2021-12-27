@@ -25,7 +25,11 @@ contract nft is ERC721, Ownable {
     constructor() ERC721("ChrisNFT", "CNFT") {}
 
     // Start from tokenId=1
-    function mint(address _to, string memory _tokenURI) public onlyOwner returns (uint256){
+    function mint(address _to, string memory _tokenURI)
+        public
+        onlyOwner
+        returns (uint256)
+    {
         tokenId += 1;
         metadata memory tokenMetadata = metadata({
             tokenId: tokenId,
@@ -66,5 +70,18 @@ contract nft is ERC721, Ownable {
     {
         console.log("tokenURI tokenURI:", tokenURIs[_tokenId]);
         return tokenURIs[_tokenId];
+    }
+
+    // Return an array of the tokenIds
+    function listOwnedTokens(address _owner)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        uint256[] memory result = new uint256[](portfolio[_owner].length);
+        for (uint256 i = 0; i < portfolio[_owner].length; i++) {
+            result[i] = portfolio[_owner][i].tokenId;
+        }
+        return result;
     }
 }
