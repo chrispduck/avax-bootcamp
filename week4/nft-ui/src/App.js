@@ -1,22 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Button } from "react-bootstrap";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Button varient="secondary">
+          <img
+            src="images/metamask.svg"
+            alt="metamask"
+            width="58"
+            height="50"
+          ></img>
+          Connect to MetaMask
+        </Button>
+        <div>
+          Connected account: 
+        </div>
+        <Button varient="danger">
+        <img
+          src="images/noun_waving_3666509.svg"
+          alt="disconnect"
+          width="58"
+          height="50"
+        ></img>
+        Disconnect MetaMask</Button>
       </header>
     </div>
   );
