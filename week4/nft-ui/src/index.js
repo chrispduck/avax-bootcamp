@@ -1,15 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
+import Web3 from 'web3'
+import { Web3ReactProvider } from "@web3-react/core";
+import { MetaMaskProvider } from "./hooks/useMetaMask";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
+function getLibrary(provider, connector){
+  return new Web3(provider)
+}
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Web3ReactProvider>
+      <MetaMaskProvider getLibrary={getLibrary}>
+        <App />
+      </MetaMaskProvider>
+    </Web3ReactProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

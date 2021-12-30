@@ -30,20 +30,31 @@ export const MetaMaskProvider = ({ children }) => {
 
   // Disconnect from MetaMask
   const disconnect = async () => {
-    console.log('Disconnecting wallet from App...')
+    console.log("Disconnecting wallet from App...");
     try {
-      await deactivate()
-    } catch(error){
-        console.log('Error on disconnect: ', error)
+      await deactivate();
+    } catch (error) {
+      console.log("Error on disconnect: ", error);
     }
-  }
+  };
 
   // Check when App is connected or Disconnected to MetaMask
   const handleIsActive = useCallback(() => {
-    console.log('App is connected with MetaMask ', active)
-    setIsActive(active)
-  }, [active])
-  
+    console.log("App is connected with MetaMask ", active);
+    setIsActive(active);
+  }, [active]);
+
+  const values = useMemo(
+    () => ({
+      isActive,
+      account,
+      isLoading,
+      connect,
+      disconnect,
+    }),
+    [isActive, isLoading]
+  );
+
   return (
     <MetaMaskContext.Provider value={values}>
       {children}

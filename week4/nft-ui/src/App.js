@@ -1,11 +1,15 @@
 import "./App.css";
 import { Button } from "react-bootstrap";
+import useMetaMask from "./hooks/useMetaMask";
+
 
 function App() {
+  const { connect, disconnect, isActive, account } = useMetaMask()
+
   return (
     <div className="App">
       <header className="App-header">
-        <Button varient="secondary">
+        <Button varient="secondary" onClick={connect}>
           <img
             src="images/metamask.svg"
             alt="metamask"
@@ -15,9 +19,9 @@ function App() {
           Connect to MetaMask
         </Button>
         <div>
-          Connected account: 
+          Connected account: {isActive ? account : ''}
         </div>
-        <Button varient="danger">
+        <Button varient="danger" onClick={disconnect}>
         <img
           src="images/noun_waving_3666509.svg"
           alt="disconnect"
