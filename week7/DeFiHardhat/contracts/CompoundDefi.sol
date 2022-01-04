@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-interface ERC20 {
+interface ERC20simple {
     function approve(address, uint256) external returns (bool);
 
     function transfer(address, uint256) external returns (bool);
@@ -19,15 +19,15 @@ interface cERC20 {
     function redeem(uint256) external returns (uint256);
 
     function redeemUnderlying(uint256) external returns (uint256);
-}
+}   
 
-contract Savings {
+contract CompoundDefi {
     address private DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
     address private cDAI = 0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643;
-    ERC20 immutable TokenDAI;
+    ERC20simple immutable TokenDAI;
     cERC20 immutable TokenCDAI;
     constructor (){
-        TokenDAI = ERC20(DAI);
+        TokenDAI = ERC20simple(DAI);
         TokenCDAI = cERC20(cDAI);
     }
     

@@ -38,7 +38,7 @@ describe("Uniswap", () => {
     );
 
     // Deploy our contract
-    const DeFi = await ethers.getContractFactory("DeFi");
+    const DeFi = await ethers.getContractFactory("UniswapDefi");
     DeFi_Instance = await DeFi.deploy();
   });
 
