@@ -3,7 +3,7 @@
 const { ethers } = require("hardhat");
 
 // import { expect } from "chai";
-// ethers = require("@nomiclabs/hardhat-ethers");
+ethers = require("@nomiclabs/hardhat-ethers");
 chai = require("chai");
 
 const DAIAddress = "0x6b175474e89094c44da98b954eedeac495271d0f";
@@ -27,6 +27,6 @@ describe("compound", () => {
     console.log("balance of DAI:", balance);
     let tx = await DaiToken.approve(CompoundDefi.address, 10e10);
     await tx.wait();
-    
+        
   });
 });
