@@ -15,3 +15,4 @@
 - [x] 12. Upgradeable contract
 - [x] 13. DeFi interactions
 - [x] 14. Interacting with compound
+- [ ] 15. Oracles
