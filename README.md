@@ -16,3 +16,5 @@
 - [x] 13. DeFi interactions
 - [x] 14. Interacting with compound
 - [ ] 15. Oracles
+- [ ] 16. The graph 
+- [ ] 18. Storage options
